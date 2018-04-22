@@ -51,8 +51,13 @@ local CLASSES = {
 --------------------------------------------------------------------------------
 
 local STATS = {
-	id    = {offset = 0x00, f = memory.readbyte, mask = 0x1F, boolean = false},
-	class = {offset = 0x01, f = memory.readbyte, mask = 0x0F, boolean = false},
+	id     = {offset = 0x00, f = memory.readbyte,    mask = 0x1F, boolean = false},
+	class  = {offset = 0x01, f = memory.readbyte,    mask = 0x0F, boolean = false},
+	level  = {offset = 0x02, f = memory.readbyte,    mask = nil,  boolean = false},
+	hp     = {offset = 0x07, f = memory.read_u16_le, mask = nil,  boolean = false},
+	hp_max = {offset = 0x09, f = memory.read_u16_le, mask = nil,  boolean = false},
+	mp     = {offset = 0x0B, f = memory.read_u16_le, mask = nil,  boolean = false},
+	mp_max = {offset = 0x0D, f = memory.read_u16_le, mask = nil,  boolean = false},
 }
 
 --------------------------------------------------------------------------------
@@ -86,10 +91,16 @@ local function readStat(stat, slot, battle)
 end
 
 local function readCharacter(slot, battle)
-	return {
-		name = CHARACTERS[readStat('id', slot, battle)],
-		class = CLASSES[readStat('class', slot, battle)],
-	}
+	local character = {}
+
+	for key, _ in pairs(STATS) do
+		character[key] = readStat(key, slot, battle)
+	end
+
+	character.name = CHARACTERS[character.id]
+	character.className = CLASSES[character.class]
+
+	return character
 end
 
 local function drawText(row, col, text, color)
@@ -101,7 +112,10 @@ local function displayCharacterData(slot)
 
 	drawText(0, 0, string.format("Slot:      %d", slot))
 	drawText(1, 0, string.format("Character: %s", characterBattle.name))
-	drawText(2, 0, string.format("Class:     %s", characterBattle.class))
+	drawText(2, 0, string.format("Class:     %s", characterBattle.className))
+	drawText(3, 0, string.format("Level:     %d", characterBattle.level))
+	drawText(4, 0, string.format("HP:        %d / %d", characterBattle.hp, characterBattle.hp_max))
+	drawText(5, 0, string.format("MP:        %d / %d", characterBattle.mp, characterBattle.mp_max))
 end
 
 --------------------------------------------------------------------------------
