@@ -51,13 +51,23 @@ local CLASSES = {
 --------------------------------------------------------------------------------
 
 local STATS = {
-	id     = {offset = 0x00, f = memory.readbyte,    mask = 0x1F, boolean = false},
-	class  = {offset = 0x01, f = memory.readbyte,    mask = 0x0F, boolean = false},
-	level  = {offset = 0x02, f = memory.readbyte,    mask = nil,  boolean = false},
-	hp     = {offset = 0x07, f = memory.read_u16_le, mask = nil,  boolean = false},
-	hp_max = {offset = 0x09, f = memory.read_u16_le, mask = nil,  boolean = false},
-	mp     = {offset = 0x0B, f = memory.read_u16_le, mask = nil,  boolean = false},
-	mp_max = {offset = 0x0D, f = memory.read_u16_le, mask = nil,  boolean = false},
+	id       = {offset = 0x00, f = memory.readbyte,    mask = 0x1F, boolean = false},
+	class    = {offset = 0x01, f = memory.readbyte,    mask = 0x0F, boolean = false},
+	level    = {offset = 0x02, f = memory.readbyte,    mask = nil,  boolean = false},
+	hp       = {offset = 0x07, f = memory.read_u16_le, mask = nil,  boolean = false},
+	hp_max   = {offset = 0x09, f = memory.read_u16_le, mask = nil,  boolean = false},
+	mp       = {offset = 0x0B, f = memory.read_u16_le, mask = nil,  boolean = false},
+	mp_max   = {offset = 0x0D, f = memory.read_u16_le, mask = nil,  boolean = false},
+	str_base = {offset = 0x0F, f = memory.readbyte,    mask = nil,  boolean = false},
+	agi_base = {offset = 0x10, f = memory.readbyte,    mask = nil,  boolean = false},
+	vit_base = {offset = 0x11, f = memory.readbyte,    mask = nil,  boolean = false},
+	wis_base = {offset = 0x12, f = memory.readbyte,    mask = nil,  boolean = false},
+	wil_base = {offset = 0x13, f = memory.readbyte,    mask = nil,  boolean = false},
+	str      = {offset = 0x14, f = memory.readbyte,    mask = nil,  boolean = false},
+	agi      = {offset = 0x15, f = memory.readbyte,    mask = nil,  boolean = false},
+	vit      = {offset = 0x16, f = memory.readbyte,    mask = nil,  boolean = false},
+	wis      = {offset = 0x17, f = memory.readbyte,    mask = nil,  boolean = false},
+	wil      = {offset = 0x18, f = memory.readbyte,    mask = nil,  boolean = false},
 }
 
 --------------------------------------------------------------------------------
@@ -99,6 +109,8 @@ local function readCharacter(slot, battle)
 
 	character.name = CHARACTERS[character.id]
 	character.className = CLASSES[character.class]
+	character.stats_base = string.format('%02d %02d %02d %02d %02d', character.str_base, character.agi_base, character.vit_base, character.wis_base, character.wil_base)
+	character.stats = string.format('%02d %02d %02d %02d %02d', character.str, character.agi, character.vit, character.wis, character.wil)
 
 	return character
 end
@@ -110,12 +122,14 @@ end
 local function displayCharacterData(slot)
 	local characterBattle = readCharacter(slot, true)
 
-	drawText(0, 0, string.format("Slot:      %d", slot))
-	drawText(1, 0, string.format("Character: %s", characterBattle.name))
-	drawText(2, 0, string.format("Class:     %s", characterBattle.className))
-	drawText(3, 0, string.format("Level:     %d", characterBattle.level))
-	drawText(4, 0, string.format("HP:        %d / %d", characterBattle.hp, characterBattle.hp_max))
-	drawText(5, 0, string.format("MP:        %d / %d", characterBattle.mp, characterBattle.mp_max))
+	drawText(0, 0, string.format('Slot:       %d', slot))
+	drawText(1, 0, string.format('Character:  %s', characterBattle.name))
+	drawText(2, 0, string.format('Class:      %s', characterBattle.className))
+	drawText(3, 0, string.format('Level:      %d', characterBattle.level))
+	drawText(4, 0, string.format('HP:         %d / %d', characterBattle.hp, characterBattle.hp_max))
+	drawText(5, 0, string.format('MP:         %d / %d', characterBattle.mp, characterBattle.mp_max))
+	drawText(6, 0, string.format('Base Stats: %s', characterBattle.stats_base))
+	drawText(7, 0, string.format('Stats:      %s', characterBattle.stats))
 end
 
 --------------------------------------------------------------------------------
