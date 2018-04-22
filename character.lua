@@ -51,23 +51,44 @@ local CLASSES = {
 --------------------------------------------------------------------------------
 
 local STATS = {
-	id       = {offset = 0x00, f = memory.readbyte,    mask = 0x1F, boolean = false},
-	class    = {offset = 0x01, f = memory.readbyte,    mask = 0x0F, boolean = false},
-	level    = {offset = 0x02, f = memory.readbyte,    mask = nil,  boolean = false},
-	hp       = {offset = 0x07, f = memory.read_u16_le, mask = nil,  boolean = false},
-	hp_max   = {offset = 0x09, f = memory.read_u16_le, mask = nil,  boolean = false},
-	mp       = {offset = 0x0B, f = memory.read_u16_le, mask = nil,  boolean = false},
-	mp_max   = {offset = 0x0D, f = memory.read_u16_le, mask = nil,  boolean = false},
-	str_base = {offset = 0x0F, f = memory.readbyte,    mask = nil,  boolean = false},
-	agi_base = {offset = 0x10, f = memory.readbyte,    mask = nil,  boolean = false},
-	vit_base = {offset = 0x11, f = memory.readbyte,    mask = nil,  boolean = false},
-	wis_base = {offset = 0x12, f = memory.readbyte,    mask = nil,  boolean = false},
-	wil_base = {offset = 0x13, f = memory.readbyte,    mask = nil,  boolean = false},
-	str      = {offset = 0x14, f = memory.readbyte,    mask = nil,  boolean = false},
-	agi      = {offset = 0x15, f = memory.readbyte,    mask = nil,  boolean = false},
-	vit      = {offset = 0x16, f = memory.readbyte,    mask = nil,  boolean = false},
-	wis      = {offset = 0x17, f = memory.readbyte,    mask = nil,  boolean = false},
-	wil      = {offset = 0x18, f = memory.readbyte,    mask = nil,  boolean = false},
+	id           = {offset = 0x00, f = memory.readbyte,    mask = 0x1F, boolean = false},
+	leftHanded   = {offset = 0x00, f = memory.readbyte,    mask = 0x40, boolean = true},
+	rightHanded  = {offset = 0x00, f = memory.readbyte,    mask = 0x80, boolean = true},
+	class        = {offset = 0x01, f = memory.readbyte,    mask = 0x0F, boolean = false},
+	inBackRow    = {offset = 0x01, f = memory.readbyte,    mask = 0x80, boolean = true},
+	level        = {offset = 0x02, f = memory.readbyte,    mask = nil,  boolean = false},
+	hp           = {offset = 0x07, f = memory.read_u16_le, mask = nil,  boolean = false},
+	hp_max       = {offset = 0x09, f = memory.read_u16_le, mask = nil,  boolean = false},
+	mp           = {offset = 0x0B, f = memory.read_u16_le, mask = nil,  boolean = false},
+	mp_max       = {offset = 0x0D, f = memory.read_u16_le, mask = nil,  boolean = false},
+	str_base     = {offset = 0x0F, f = memory.readbyte,    mask = nil,  boolean = false},
+	agi_base     = {offset = 0x10, f = memory.readbyte,    mask = nil,  boolean = false},
+	vit_base     = {offset = 0x11, f = memory.readbyte,    mask = nil,  boolean = false},
+	wis_base     = {offset = 0x12, f = memory.readbyte,    mask = nil,  boolean = false},
+	wil_base     = {offset = 0x13, f = memory.readbyte,    mask = nil,  boolean = false},
+	str          = {offset = 0x14, f = memory.readbyte,    mask = nil,  boolean = false},
+	agi          = {offset = 0x15, f = memory.readbyte,    mask = nil,  boolean = false},
+	vit          = {offset = 0x16, f = memory.readbyte,    mask = nil,  boolean = false},
+	wis          = {offset = 0x17, f = memory.readbyte,    mask = nil,  boolean = false},
+	wil          = {offset = 0x18, f = memory.readbyte,    mask = nil,  boolean = false},
+
+	unknownFlagA = {offset = 0x00, f = memory.readbyte,    mask = 0x20, boolean = true},
+	unknownFlagB = {offset = 0x01, f = memory.readbyte,    mask = 0x10, boolean = true},
+	unknownFlagC = {offset = 0x01, f = memory.readbyte,    mask = 0x20, boolean = true},
+	unknownFlagD = {offset = 0x01, f = memory.readbyte,    mask = 0x40, boolean = true},
+}
+
+local FLAGS = {
+	{'leftHanded', 'L'},
+	{'rightHanded', 'R'},
+	{'inBackRow', 'B'},
+}
+
+local UNKNOWN_FLAGS = {
+	{'unknownFlagA', 'A'},
+	{'unknownFlagB', 'B'},
+	{'unknownFlagC', 'C'},
+	{'unknownFlagD', 'D'},
 }
 
 --------------------------------------------------------------------------------
@@ -100,6 +121,22 @@ local function readStat(stat, slot, battle)
 	return value
 end
 
+local function formatFlagString(flags, character)
+	local output = ''
+
+	for i = 1, #flags do
+		local flag, description = unpack(flags[i])
+
+		if character[flag] then
+			output = output .. description
+		else
+			output = output .. ' '
+		end
+	end
+
+	return output
+end
+
 local function readCharacter(slot, battle)
 	local character = {}
 
@@ -112,11 +149,14 @@ local function readCharacter(slot, battle)
 	character.stats_base = string.format('%02d %02d %02d %02d %02d', character.str_base, character.agi_base, character.vit_base, character.wis_base, character.wil_base)
 	character.stats = string.format('%02d %02d %02d %02d %02d', character.str, character.agi, character.vit, character.wis, character.wil)
 
+	character.flags = formatFlagString(FLAGS, character)
+	character.unknownFlags = formatFlagString(UNKNOWN_FLAGS, character)
+
 	return character
 end
 
-local function drawText(row, col, text, color)
-	gui.pixelText(256 + col * 4, row * 7, text, color)
+local function drawText(row, col, text, color, backcolor)
+	gui.pixelText(256 + col * 4, row * 7, text, color, backcolor)
 end
 
 local function displayCharacterData(slot)
@@ -125,11 +165,15 @@ local function displayCharacterData(slot)
 	drawText(0, 0, string.format('Slot:       %d', slot))
 	drawText(1, 0, string.format('Character:  %s', characterBattle.name))
 	drawText(2, 0, string.format('Class:      %s', characterBattle.className))
-	drawText(3, 0, string.format('Level:      %d', characterBattle.level))
-	drawText(4, 0, string.format('HP:         %d / %d', characterBattle.hp, characterBattle.hp_max))
-	drawText(5, 0, string.format('MP:         %d / %d', characterBattle.mp, characterBattle.mp_max))
-	drawText(6, 0, string.format('Base Stats: %s', characterBattle.stats_base))
-	drawText(7, 0, string.format('Stats:      %s', characterBattle.stats))
+	drawText(3, 12, 'LRB', 0xFF606060)
+	drawText(3, 0, string.format('Flags:      %s', characterBattle.flags), nil, 0x00000000)
+	drawText(4, 12, 'ABCD', 0xFF606060)
+	drawText(4, 0, string.format('? Flags:    %s', characterBattle.unknownFlags), nil, 0x00000000)
+	drawText(5, 0, string.format('Level:      %d', characterBattle.level))
+	drawText(6, 0, string.format('HP:         %d / %d', characterBattle.hp, characterBattle.hp_max))
+	drawText(7, 0, string.format('MP:         %d / %d', characterBattle.mp, characterBattle.mp_max))
+	drawText(8, 0, string.format('Base Stats: %s', characterBattle.stats_base))
+	drawText(9, 0, string.format('Stats:      %s', characterBattle.stats))
 end
 
 --------------------------------------------------------------------------------
