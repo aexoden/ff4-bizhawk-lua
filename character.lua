@@ -228,12 +228,38 @@ local function displayCharacterData(slot)
 end
 
 --------------------------------------------------------------------------------
+-- Form Handling
+--------------------------------------------------------------------------------
+
+local form
+local formLabel
+local formSlot
+local formButton
+
+local slot = 0
+
+function onExit()
+	forms.destroy(form)
+end
+
+function onUpdate()
+	slot = tonumber(forms.gettext(formSlot))
+end
+
+form = forms.newform(200, 150, "Character Record")
+formLabel = forms.label(form, 'Slot to Display:', 5, 8)
+formSlot = forms.textbox(form, '0', 170, 25, nil, 5, 32)
+formButton = forms.button(form, 'Update', onUpdate, 5, 64)
+
+event.onexit(onExit)
+
+--------------------------------------------------------------------------------
 -- Main Execution
 --------------------------------------------------------------------------------
 
 function main()
 	client.SetGameExtraPadding(0, 0, 256, 0)
-	displayCharacterData(0)
+	displayCharacterData(slot)
 end
 
 while true do
