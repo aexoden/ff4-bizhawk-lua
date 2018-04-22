@@ -93,6 +93,21 @@ local STATS = {
 	exp                    = {offset = 0x37, f = memory.read_u24_le, mask = nil,  boolean = false},
 	-- TODO: Unknown: 0x3A
 	speedModifier          = {offset = 0x3B, f = memory.readbyte,    mask = nil,  boolean = false},
+	-- TODO: Unknown: 0x3C
+	levelUpExp             = {offset = 0x3D, f = memory.read_u24_le, mask = nil,  boolean = false},
+	-- TODO: Creature Types: 0x40
+	-- TODO: Unknown: 0x41 - 0x50
+	-- TODO: Next Command: 0x51
+	-- TODO: Next Sub-Action: 0x52
+	-- TODO: Next Action Monster Target: 0x53
+	-- TODO: Next Action Party Target: 0x54
+	-- TODO: Unknown: 0x55 - 0x5F
+	relativeSpeed          = {offset = 0x60, f = memory.read_u16_le, mask = nil,  boolean = false},
+	-- TODO: Unknown: 0x62 - 0x6F
+	-- TODO: Level and Boss Bit: 0x70
+	-- TODO: Unknown: 0x71 - 0x72
+	-- TODO: Item Byte: 0x73
+	-- TODO: Unknown: 0x74 - 0x7F
 
 	unknownFlagA           = {offset = 0x00, f = memory.readbyte,    mask = 0x20, boolean = true},
 	unknownFlagB           = {offset = 0x01, f = memory.readbyte,    mask = 0x10, boolean = true},
@@ -202,8 +217,9 @@ local function displayCharacterData(slot)
 	drawText(10, 0, string.format('Attack:     %s', characterBattle.attack))
 	drawText(11, 0, string.format('Defense:    %s', characterBattle.defense))
 	drawText(12, 0, string.format('Magic Def:  %s', characterBattle.magicDefense))
-	drawText(13, 0, string.format('Experience: %d', characterBattle.exp))
+	drawText(13, 0, string.format('Experience: %d (%d to level up)', characterBattle.exp, characterBattle.levelUpExp))
 	drawText(14, 0, string.format('Speed Mod:  %d', characterBattle.speedModifier))
+	drawText(15, 0, string.format('Rel. Speed: %d', characterBattle.relativeSpeed))
 end
 
 --------------------------------------------------------------------------------
