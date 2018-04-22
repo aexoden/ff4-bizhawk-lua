@@ -88,7 +88,8 @@ local STATS = {
 	defensePercent         = {offset = 0x29, f = memory.readbyte,    mask = nil,  boolean = false},
 	defenseBase            = {offset = 0x2A, f = memory.readbyte,    mask = nil,  boolean = false},
 	-- TODO: Status Immunity: 0x2B - 0x2C
-	-- TODO: Unknown: 0x2D - 0x2F
+	criticalRate           = {offset = 0x2D, f = memory.readbyte,    mask = nil,  boolean = false},
+	-- TODO: Unknown: 0x2E - 0x2F
 	-- TODO: Equipment: 0x30 - 0x36
 	exp                    = {offset = 0x37, f = memory.read_u24_le, mask = nil,  boolean = false},
 	-- TODO: Unknown: 0x3A
@@ -96,7 +97,9 @@ local STATS = {
 	-- TODO: Unknown: 0x3C
 	levelUpExp             = {offset = 0x3D, f = memory.read_u24_le, mask = nil,  boolean = false},
 	-- TODO: Creature Types: 0x40
-	-- TODO: Unknown: 0x41 - 0x50
+	-- TODO: Unknown: 0x41
+	criticalBonus          = {offset = 0x42, f = memory.readbyte,    mask = nil,  boolean = false},
+	-- TODO: Unknown: 0x43 - 0x50
 	-- TODO: Next Command: 0x51
 	-- TODO: Next Sub-Action: 0x52
 	-- TODO: Next Action Monster Target: 0x53
@@ -220,6 +223,8 @@ local function displayCharacterData(slot)
 	drawText(13, 0, string.format('Experience: %d (%d to level up)', characterBattle.exp, characterBattle.levelUpExp))
 	drawText(14, 0, string.format('Speed Mod:  %d', characterBattle.speedModifier))
 	drawText(15, 0, string.format('Rel. Speed: %d', characterBattle.relativeSpeed))
+	drawText(16, 0, string.format('Crit. Rate: %d', characterBattle.criticalRate))
+	drawText(17, 0, string.format('Crit. Bon.: %d', characterBattle.criticalBonus))
 end
 
 --------------------------------------------------------------------------------
