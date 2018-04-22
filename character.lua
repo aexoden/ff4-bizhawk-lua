@@ -91,6 +91,8 @@ local STATS = {
 	-- TODO: Unknown: 0x2D - 0x2F
 	-- TODO: Equipment: 0x30 - 0x36
 	exp                    = {offset = 0x37, f = memory.read_u24_le, mask = nil,  boolean = false},
+	-- TODO: Unknown: 0x3A
+	speedModifier          = {offset = 0x3B, f = memory.readbyte,    mask = nil,  boolean = false},
 
 	unknownFlagA           = {offset = 0x00, f = memory.readbyte,    mask = 0x20, boolean = true},
 	unknownFlagB           = {offset = 0x01, f = memory.readbyte,    mask = 0x10, boolean = true},
@@ -201,6 +203,7 @@ local function displayCharacterData(slot)
 	drawText(11, 0, string.format('Defense:    %s', characterBattle.defense))
 	drawText(12, 0, string.format('Magic Def:  %s', characterBattle.magicDefense))
 	drawText(13, 0, string.format('Experience: %d', characterBattle.exp))
+	drawText(14, 0, string.format('Speed Mod:  %d', characterBattle.speedModifier))
 end
 
 --------------------------------------------------------------------------------
