@@ -89,28 +89,77 @@ local STATS = {
 	defenseBase            = {offset = 0x2A, f = memory.readbyte,    mask = nil,  boolean = false},
 	-- TODO: Status Immunity: 0x2B - 0x2C
 	criticalRate           = {offset = 0x2D, f = memory.readbyte,    mask = nil,  boolean = false},
-	-- TODO: Unknown: 0x2E - 0x2F
+	unknown2E              = {offset = 0x2E, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown2F              = {offset = 0x2F, f = memory.readbyte,    mask = nil,  boolean = false},
 	-- TODO: Equipment: 0x30 - 0x36
 	exp                    = {offset = 0x37, f = memory.read_u24_le, mask = nil,  boolean = false},
-	-- TODO: Unknown: 0x3A
+	unknown3A              = {offset = 0x3A, f = memory.readbyte,    mask = nil,  boolean = false},
 	speedModifier          = {offset = 0x3B, f = memory.readbyte,    mask = nil,  boolean = false},
-	-- TODO: Unknown: 0x3C
+	unknown3C              = {offset = 0x3C, f = memory.readbyte,    mask = nil,  boolean = false},
 	levelUpExp             = {offset = 0x3D, f = memory.read_u24_le, mask = nil,  boolean = false},
 	-- TODO: Creature Types: 0x40
-	-- TODO: Unknown: 0x41
+	unknown41              = {offset = 0x41, f = memory.readbyte,    mask = nil,  boolean = false},
 	criticalBonus          = {offset = 0x42, f = memory.readbyte,    mask = nil,  boolean = false},
-	-- TODO: Unknown: 0x43 - 0x50
+	unknown43              = {offset = 0x43, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown44              = {offset = 0x44, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown45              = {offset = 0x45, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown46              = {offset = 0x46, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown47              = {offset = 0x47, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown48              = {offset = 0x48, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown49              = {offset = 0x49, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown4A              = {offset = 0x4A, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown4B              = {offset = 0x4B, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown4C              = {offset = 0x4C, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown4D              = {offset = 0x4D, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown4E              = {offset = 0x4E, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown4F              = {offset = 0x4F, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown50              = {offset = 0x50, f = memory.readbyte,    mask = nil,  boolean = false},
 	-- TODO: Next Command: 0x51
 	-- TODO: Next Sub-Action: 0x52
 	-- TODO: Next Action Monster Target: 0x53
 	-- TODO: Next Action Party Target: 0x54
-	-- TODO: Unknown: 0x55 - 0x5F
+	unknown55              = {offset = 0x55, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown56              = {offset = 0x56, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown57              = {offset = 0x57, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown58              = {offset = 0x58, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown59              = {offset = 0x59, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown5A              = {offset = 0x5A, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown5B              = {offset = 0x5B, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown5C              = {offset = 0x5C, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown5D              = {offset = 0x5D, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown5E              = {offset = 0x5E, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown5F              = {offset = 0x5F, f = memory.readbyte,    mask = nil,  boolean = false},
 	relativeSpeed          = {offset = 0x60, f = memory.read_u16_le, mask = nil,  boolean = false},
-	-- TODO: Unknown: 0x62 - 0x6F
+	unknown62              = {offset = 0x62, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown63              = {offset = 0x63, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown64              = {offset = 0x64, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown65              = {offset = 0x65, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown66              = {offset = 0x66, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown67              = {offset = 0x67, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown68              = {offset = 0x68, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown69              = {offset = 0x69, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown6A              = {offset = 0x6A, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown6B              = {offset = 0x6B, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown6C              = {offset = 0x6C, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown6D              = {offset = 0x6D, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown6E              = {offset = 0x6E, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown6F              = {offset = 0x6F, f = memory.readbyte,    mask = nil,  boolean = false},
 	-- TODO: Level and Boss Bit: 0x70
-	-- TODO: Unknown: 0x71 - 0x72
+	unknown71              = {offset = 0x71, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown72              = {offset = 0x72, f = memory.readbyte,    mask = nil,  boolean = false},
 	-- TODO: Item Byte: 0x73
-	-- TODO: Unknown: 0x74 - 0x7F
+	unknown74              = {offset = 0x74, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown75              = {offset = 0x75, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown76              = {offset = 0x76, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown77              = {offset = 0x77, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown78              = {offset = 0x78, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown79              = {offset = 0x79, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown7A              = {offset = 0x7A, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown7B              = {offset = 0x7B, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown7C              = {offset = 0x7C, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown7D              = {offset = 0x7D, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown7E              = {offset = 0x7E, f = memory.readbyte,    mask = nil,  boolean = false},
+	unknown7F              = {offset = 0x7F, f = memory.readbyte,    mask = nil,  boolean = false},
 
 	unknownFlagA           = {offset = 0x00, f = memory.readbyte,    mask = 0x20, boolean = true},
 	unknownFlagB           = {offset = 0x01, f = memory.readbyte,    mask = 0x10, boolean = true},
@@ -129,6 +178,14 @@ local UNKNOWN_FLAGS = {
 	{'unknownFlagB', 'B'},
 	{'unknownFlagC', 'C'},
 	{'unknownFlagD', 'D'},
+}
+
+local UNKNOWN_BYTES = {
+	0x2E, 0x2F, 0x3A, 0x3C, 0x41, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49,
+	0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F, 0x50, 0x55, 0x56, 0x57, 0x58, 0x59,
+	0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F, 0x62, 0x63, 0x64, 0x65, 0x66, 0x67,
+	0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F, 0x71, 0x72, 0x74, 0x75,
+	0x76, 0x77, 0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F
 }
 
 --------------------------------------------------------------------------------
@@ -225,6 +282,22 @@ local function displayCharacterData(slot)
 	drawText(15, 0, string.format('Relative Speed: %d', characterBattle.relativeSpeed))
 	drawText(16, 0, string.format('Critical Rate:  %d', characterBattle.criticalRate))
 	drawText(17, 0, string.format('Critical Bonus: %d', characterBattle.criticalBonus))
+
+	local row = 19
+	local col = 0
+
+	for i = 1, #UNKNOWN_BYTES do
+		local index = UNKNOWN_BYTES[i]
+		local value = characterBattle[string.format('unknown%02X', index)]
+		drawText(row, col, string.format('0x%02X: %3d', index, value))
+
+		row = row + 1
+
+		if row > 31 then
+			row = 19
+			col = col + 10
+		end
+	end
 end
 
 --------------------------------------------------------------------------------
